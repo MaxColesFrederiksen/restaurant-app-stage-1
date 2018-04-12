@@ -148,7 +148,7 @@ createRestaurantHTML = (restaurant) => {
   card.append(image);
   li.append(card);
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h3');
   name.innerHTML = restaurant.name;
   card.append(name);
   li.append(card);
