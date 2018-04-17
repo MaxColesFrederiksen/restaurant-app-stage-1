@@ -326,6 +326,7 @@ select::-ms-expand {
   font-weight: 400;
   line-height: 1.3em;
   margin: 20px 10px 10px;
+  white-space: pre-line;
   font-family: 'Lato', sans-serif;
   
 }
@@ -439,7 +440,7 @@ select::-ms-expand {
 #reviews-container {
   padding: 20px 20px;
 }
-#reviews-container h2 {
+#reviews-container h3 {
 
   color: white;
   background: #ffae00;

@@ -5,7 +5,6 @@ const CACHES = [
 	'/css/styles.css',
 ];
 
-
 if('serviceWorker' in navigator) {
   navigator.serviceWorker
   	.register('/serviceWorker.js')
@@ -27,8 +26,6 @@ self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
-      	
-      	console.log(response);
 
         if (response) {
           return response;

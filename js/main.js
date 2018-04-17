@@ -3,14 +3,41 @@ let restaurants,
   cuisines
 var map
 var markers = []
-
+let DB_NAME = 'db-v1'
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
+
 });
+
+/**
+ * Promise Database
+ */
+
+// 
+
+/**
+ * Read Database
+ */
+
+
+// dbPromise.then(function(db) {
+//   var tx = db.transaction(['assets'], 'readonly');
+//   var store = tx.objectStore('assets');
+//   return store.getAll();
+// }).then(function(items) {
+//   console.log(items);
+// });
+
+
+/**
+ * Add Database
+ */
+
+
 
 /**
  * Fetch all neighborhoods and set their HTML.
