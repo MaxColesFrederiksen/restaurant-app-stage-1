@@ -34,10 +34,13 @@ class DBHelper {
    //        })
    // }
 
-   static fetchRestaurants(callback) {
+  static fetchRestaurants(callback) {
     fetch(DBHelper.DATABASE_URL)
       .then(response => response.json())
-      .then((restaurants) => { console.log(restaurants); DBHelper.insertRestaurantsToDB(restaurants) }) // insert a fresh copy from server into indexeddb
+      .then((restaurants) => {
+        DBHelper.insertRestaurantsToDB(restaurants) // insert a fresh copy from server into indexeddb
+        return restaurants
+      })
       .then(restaurants => callback(null, restaurants))
       .catch(err => {
         // Fetch from indexdb when network is not available
@@ -52,18 +55,26 @@ class DBHelper {
 
       let dbPromise = idb.open(DB_NAME, 1, function(upgradeDB) {
         let store = upgradeDB.createObjectStore('assets', { autoIncrement: true });
+
       });
 
 
       dbPromise.then(function(db) {
-      var tx = db.transaction('assets', 'readwrite');
-      var store = tx.objectStore('assets');
-      
-      store.add(restaurants);
-      return tx.complete;
-    }).then(function() {
-      console.log('added item to the store os!');
-    });
+        let tx = db.transaction('assets', 'readwrite');
+        let store = tx.objectStore('assets');
+
+        console.log(db);
+        
+        for (let restaurant of restaurants) {
+          store.add(restaurant);
+        }
+        
+
+        // store.add(restaurants);
+        return tx.complete;
+      }).then(function() {
+        console.log('added item to the store os!');
+      });
    }
 
 
