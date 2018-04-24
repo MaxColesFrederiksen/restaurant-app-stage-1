@@ -51,30 +51,45 @@ class DBHelper {
   }
 
    static insertRestaurantsToDB(restaurants) {
-      let DB_NAME = 'db-v1'
+      let DB_NAME = 'db-v2'
 
-      let dbPromise = idb.open(DB_NAME, 1, function(upgradeDB) {
-        let store = upgradeDB.createObjectStore('assets', { autoIncrement: true });
-
+      let dbPromise = idb.open(DB_NAME, 3, function(upgradeDb) {
+        switch(upgradeDb.oldVersion) {
+          case 0:
+            upgradeDb.createObjectStore('restaurants' ,{keyPath: 'id'});
+          case 1:
+            upgradeDb.createObjectStore('reviews' ,{keyPath: 'restaurant_id'});
+          }
       });
-
 
       dbPromise.then(function(db) {
-        let tx = db.transaction('assets', 'readwrite');
-        let store = tx.objectStore('assets');
+        let tx = db.transaction('restaurants', 'readwrite');
+        let store = tx.objectStore('restaurants');
 
-        console.log(db);
-        
+      
         for (let restaurant of restaurants) {
-          store.add(restaurant);
+          store.put(restaurant);
         }
         
-
-        // store.add(restaurants);
         return tx.complete;
       }).then(function() {
-        console.log('added item to the store os!');
+        console.log('added restaurants!');
       });
+
+      dbPromise.then(function(db) {
+        let tx = db.transaction('reviews', 'readwrite');
+        let store = tx.objectStore('reviews');
+
+      
+        for (let restaurant of restaurants) {
+          store.put(restaurant);
+        }
+
+        return tx.complete;
+      }).then(function() {
+        console.log('added reviews!');
+      });
+
    }
 
 
