@@ -65,9 +65,10 @@ class DBHelper {
       dbPromise.then(function(db) {
         let tx = db.transaction('restaurants', 'readwrite');
         let store = tx.objectStore('restaurants');
-
+        
       
         for (let restaurant of restaurants) {
+          // console.log(restaurant)
           store.put(restaurant);
         }
         
@@ -79,10 +80,14 @@ class DBHelper {
       dbPromise.then(function(db) {
         let tx = db.transaction('reviews', 'readwrite');
         let store = tx.objectStore('reviews');
+        
 
       
         for (let restaurant of restaurants) {
-          store.put(restaurant);
+          
+          let reviews = restaurant.reviews;
+          console.log(reviews)
+          store.put({restaurant_id: restaurant.id, reviews: reviews});
         }
 
         return tx.complete;
