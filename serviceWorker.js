@@ -13,7 +13,7 @@ if('serviceWorker' in navigator) {
   	});
 }
 
-self.addEventListener('install', {passive: true}, function(e) {
+self.addEventListener('install', function(e) {
 	console.log('installing..');
 	 e.waitUntil(
 	   caches.open(CACHES_NAME).then(function(cache) {
@@ -22,7 +22,7 @@ self.addEventListener('install', {passive: true}, function(e) {
 	 );
 });
 
-self.addEventListener('fetch', {passive: true} function(event) {
+self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
