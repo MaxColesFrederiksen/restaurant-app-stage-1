@@ -144,6 +144,7 @@ nav h1 a:hover {
 
 
 .card {
+  position: relative;
   max-width: 250px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.13);
   display: inline-block;
@@ -343,11 +344,11 @@ select::-ms-expand {
   display: inline-block;
   font-size: 1em;
   margin: 15px 0 0 0;
-  width: 100%;
+  width: 70%;
   padding: 8px 25px 10px;
   text-align: center;
   text-decoration: none;
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 2px 0 5px;
   transition: all .3s ease;
   
 }
@@ -450,6 +451,10 @@ select::-ms-expand {
   font-weight: 300;
   padding: 0;
 
+}
+
+#reviews-container p {
+  font-family: 'Lato', sans-serif;
 }
 
 #reviews-list {
@@ -656,6 +661,10 @@ select::-ms-expand {
   .filter-options {
     display: block;
   }
+
+  .restaurant-individual-container {
+    padding: 90px 0;
+  }
 }
 
 
@@ -707,3 +716,91 @@ select::-ms-expand {
   }
 
 }
+
+/* Form */
+
+.form-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#reviews-form {
+  max-width: 500px;
+}
+
+#reviews-form:after {
+  
+  content: "";
+  clear: both;
+  display: table;
+
+}
+
+.review-name, 
+.review-comment {
+  font-size: .9em;
+  display: block;
+  border: solid 1px lightgray;
+  font-family: 'Lato', sans-serif;
+  padding: 10px 20px 10px 5px;
+}
+
+.review-name {
+  max-width: 280px;
+}
+
+.review-comment {
+  width: 100%;
+}
+
+#rating {
+  display: inline-block;
+  padding: 20px 0;
+  margin-right: 40px;
+}
+
+.review-submit {
+  padding: 15px;
+  color: #fff;
+  font-family: 'Lato', sans-serif;
+  background-color: #ffae00;
+  font-size: 1em;
+  border: 0 solid transparent;
+  margin-top: 20px;
+}
+
+/* Favorite icon */
+
+.favorite {
+  display: inline-block;
+  margin: 0 0 5px 20px;
+  vertical-align: middle;
+  text-align: center;
+  
+  width: 32px;
+  height: 28px;
+  background-image: url('../img/heart-empty.svg');
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.favorited {
+  background-image: url('../img/heart-full.svg');
+}
+
+#restaurant-container i {
+  margin: 20px 0;
+}
+
+#restaurant-container h6 {
+  font-family: 'Lato', sans-serif;
+  font-weight: normal;
+  display: inline-block;
+  font-size: .8em;
+  color: #ffae00;
+  margin-left: 8px;
+  /* vertical-align: middle; */
+}
+

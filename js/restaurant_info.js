@@ -45,6 +45,7 @@ fetchRestaurantFromURL = (callback) => {
   }
 }
 
+
 /**
  * Create restaurant HTML and add it to the webpage
  */
@@ -67,8 +68,13 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
+  // fill favorite button
+  fillFavoriteHTML();
   // fill reviews
   fillReviewsHTML();
+
+  addFavoriteListener();
+  addFormListener(restaurant);
 }
 
 /**
@@ -91,14 +97,42 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
   }
 }
 
+fillFavoriteHTML = () => {
+  const restaurantContainer = document.getElementById("restaurant-container");
+
+  const favorite = document.createElement('i');
+  favorite.className = 'favorite';
+  favorite.setAttribute('favorite-restaurant', self.restaurant.id);
+  if (self.restaurant.is_favorite == "true") {
+
+    favorite.className += ' favorited';
+  } else {
+    favorite.className = 'favorite';
+  }
+
+  restaurantContainer.appendChild(favorite);
+  
+  const h6 = document.createElement('h6');
+  h6.innerText = 'Favorite';
+
+  restaurantContainer.appendChild(h6);
+
+  return;
+}
+
 /**
  * Create all reviews HTML and add them to the webpage.
  */
+
+ // DBHelper.fetchReviews(self.restaurant.id)
+
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
+
+  console.log(reviews)
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -166,3 +200,72 @@ getParameterByName = (name, url) => {
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+
+
+// Plugins
+
+$("#rating").rateYo({
+  rating: 2,
+  fullStar: true,
+  onSet: function (rating, rateYoInstance) {
+    console.log(rating);
+  }
+});
+
+
+addFavoriteListener = () => {
+  const favorite = document.querySelectorAll('.favorite');
+
+  favorite.forEach(function(fav) {
+    fav.addEventListener('click', function () {
+    
+    // On click of favorite
+    // if not fav call setFavoriteRestaurant
+    //else call unFavoriteRestaurant
+    if (!hasClass(fav, 'favorited')) {
+      let id = fav.getAttribute("favorite-restaurant");
+      DBHelper.favoriteRestaurant(id);
+      
+    } else {
+      let id = fav.getAttribute("favorite-restaurant");
+      DBHelper.unFavoriteRestaurant(id);
+
+    }
+
+    fav.classList.toggle('favorited');
+
+
+     console.log(hasClass(fav, 'favorited'))
+      // console.log($("#rating").rateYo("rating"));
+    })
+  })
+}
+
+addFormListener = (restaurant) => {
+  const submit = document.querySelector('.review-submit');
+  const nameInput = document.querySelector('.review-name');
+  const commentTextarea = document.querySelector('.review-comment');
+
+  submit.addEventListener('click', function(e){
+    e.preventDefault();
+
+    let id = restaurant.id;
+    let name = nameInput.value;
+    let rating = $("#rating").rateYo("rating");
+    let comment = commentTextarea.value;
+
+    let reviewObj = {
+      "restaurant_id": id,
+      "name": name,
+      "rating": rating,
+      "comments": comment
+    }
+    // DBHelper.postReview(reviewObj);
+    DBHelper.updateReview(reviewObj, id);
+  });
+}
+
+hasClass = (element, className) => {
+    return element.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(element.className);
+}
+

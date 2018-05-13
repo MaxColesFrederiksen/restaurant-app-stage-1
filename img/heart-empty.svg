@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="34px" height="30px" viewBox="0 0 34 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 18</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M17,29.628 L16.413,29.15 C3.553,18.676 0.07,14.989 0.07,9 C0.07,4.076 4.076,0.07 9,0.07 C13.115,0.07 15.441,2.407 17,4.165 C18.559,2.407 20.885,0.07 25,0.07 C29.924,0.07 33.93,4.076 33.93,9 C33.93,14.989 30.447,18.676 17.587,29.15 L17,29.628 Z M9,1.93 C5.102,1.93 1.93,5.102 1.93,9 C1.93,14.131 5.159,17.561 17,27.228 C28.841,17.561 32.07,14.131 32.07,9 C32.07,5.102 28.898,1.93 25,1.93 C21.43,1.93 19.567,4.055 18.071,5.763 L17,6.966 L15.929,5.763 C14.433,4.055 12.57,1.93 9,1.93 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-118.000000, -68.000000)">
+            <g id="Group-18" transform="translate(118.020469, 68.165645)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-17"></g>
+                <polygon id="Fill-16" fill="#FFAE00" mask="url(#mask-2)" points="-4.93 34.628 38.93 34.628 38.93 -4.93 -4.93 -4.93"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

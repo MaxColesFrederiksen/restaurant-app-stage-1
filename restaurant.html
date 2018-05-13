@@ -6,6 +6,12 @@
    <meta charset="utf-8">
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css"/>
+
   <!-- Main CSS file -->
   <link rel="stylesheet" href="css/styles.css" type="text/css">
   <title>Restaurant Info</title>
@@ -50,6 +56,20 @@
         <ul id="reviews-list"></ul>
       </section>
 
+      <section class="form-container">
+        <h2>Write your own review!</h2>
+         <form id="reviews-form">
+          <input type="text" class="review-name" placeholder="Your name...">
+          <div id="rating"></div>
+          <textarea name="" id="" cols="30" rows="10" class="review-comment" placeholder="Write your review here..."></textarea>
+          <button class="review-submit" type="submit">Submit review</button>
+        </form>
+      </section>
+
+      
+
+      
+
     </section>
   
   </main>
@@ -57,12 +77,15 @@
 
   
 
-  <footer id="footer">
+  <footer class="footer">
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
   
+  <script src="https://cdn.jsdelivr.net/npm/idb@2.1.1/lib/idb.min.js"></script>
 
-  
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
   
   <script type="text/javascript" src="js/dbhelper.js"></script>
   

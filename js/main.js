@@ -10,32 +10,7 @@ let DB_NAME = 'db-v1'
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
-
 });
-
-/**
- * Promise Database
- */
-
-// 
-
-/**
- * Read Database
- */
-
-
-// dbPromise.then(function(db) {
-//   var tx = db.transaction(['assets'], 'readonly');
-//   var store = tx.objectStore('assets');
-//   return store.getAll();
-// }).then(function(items) {
-//   console.log(items);
-// });
-
-
-/**
- * Add Database
- */
 
 
 
@@ -157,6 +132,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
     ul.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap();
+  addFavoriteListener();
 }
 
 /**
@@ -201,6 +177,18 @@ createRestaurantHTML = (restaurant) => {
   card.append(more);
   li.append(card);
 
+  const favorite = document.createElement('i');
+  favorite.className = 'favorite';
+  favorite.setAttribute('favorite-restaurant', restaurant.id);
+  
+  if (restaurant.is_favorite == "true") {
+    favorite.className += ' favorited';
+  } else {
+    favorite.className = 'favorite';
+  }
+  card.append(favorite);
+  li.append(card);
+
   return li
 }
 
@@ -216,4 +204,41 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     });
     self.markers.push(marker);
   });
+}
+
+
+addFavoriteListener = () => {
+  const favorite = document.querySelectorAll('.favorite');
+
+  favorite.forEach(function(fav) {
+    fav.addEventListener('click', function () {
+    
+    // On click of favorite
+    // if not fav call setFavoriteRestaurant
+    //else call unFavoriteRestaurant
+    if (!hasClass(fav, 'favorited')) {
+      let id = fav.getAttribute("favorite-restaurant");
+      DBHelper.favoriteRestaurant(id);
+      
+    } else {
+      let id = fav.getAttribute("favorite-restaurant");
+      DBHelper.unFavoriteRestaurant(id);
+
+    }
+
+
+    // ** Maybe use api favorite boolean value to add class "favortied" to heart before rendered ** 
+
+    fav.classList.toggle('favorited');
+
+
+     console.log(hasClass(fav, 'favorited'))
+      // console.log($("#rating").rateYo("rating"));
+    })
+  })
+}
+
+
+hasClass = (element, className) => {
+    return element.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(element.className);
 }
