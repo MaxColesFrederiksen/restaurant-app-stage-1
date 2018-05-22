@@ -13,6 +13,41 @@ class DBHelper {
     return `http://localhost:${port}/restaurants`;
   }
 
+  static responsiveImages() {
+      console.log('called responsive images')
+      var cl = cloudinary.Cloudinary.new({cloud_name: "dpehzqvvx"}); 
+      // replace 'demo' with your cloud name in the line above 
+      cl.responsive();
+    
+     
+  }
+
+  static lazyLoadImages() {
+  var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+  
+  console.log('lazyImages');
+  if ("IntersectionObserver" in window) {
+    let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target;
+          lazyImage.src = lazyImage.dataset.src;
+          // lazyImage.srcset = lazyImage.dataset.srcset;
+          lazyImage.classList.remove("lazy");
+          lazyImageObserver.unobserve(lazyImage);
+        }
+      });
+    });
+
+    lazyImages.forEach(function(lazyImage) {
+      lazyImageObserver.observe(lazyImage);
+    });
+  } else {
+    // Possibly fall back to a more compatible method here
+  }
+}
+
+
   /**
    * Post a review
    */
@@ -244,7 +279,7 @@ class DBHelper {
       }
     });
   }
-
+  
   /**
    * Restaurant page URL.
    */
@@ -256,7 +291,8 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.id}.jpg`);
+    // return (`/img/${restaurant.id}.jpg`);
+    return (`http://res.cloudinary.com/dpehzqvvx/image/upload/c_scale,w_auto/${restaurant.id}.jpg`)
   }
 
   /**

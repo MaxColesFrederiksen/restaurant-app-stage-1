@@ -133,6 +133,12 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   });
   addMarkersToMap();
   addFavoriteListener();
+  DBHelper.lazyLoadImages();
+  console.log(document.querySelector('.card'));
+  if (document.querySelector('.card')) {
+    DBHelper.responsiveImages();
+  }
+
 }
 
 /**
@@ -145,8 +151,11 @@ createRestaurantHTML = (restaurant) => {
   
 
   const image = document.createElement('img');
-  image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.className = 'cld-responsive'
+  image.className += ' restaurant-img'
+  image.className += ' lazy';
+  image.src = 'http://res.cloudinary.com/dpehzqvvx/image/upload/placeholder-img.jpg' // Use placeholder image
+  image.setAttribute("data-src", DBHelper.imageUrlForRestaurant(restaurant))
   image.alt = `Picture from the restaurant called ${restaurant.name}`;
   card.append(image);
   li.append(card);
@@ -189,6 +198,8 @@ createRestaurantHTML = (restaurant) => {
   card.append(favorite);
   li.append(card);
 
+
+  
   return li
 }
 

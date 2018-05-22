@@ -20,6 +20,7 @@ window.initMap = () => {
   });
 }
 
+
 /**
  * Get current restaurant from page URL.
  */
@@ -57,8 +58,13 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.className = 'cld-responsive'
+  image.className += ' restaurant-img'
+  image.className += ' lazy';
+  //only call the cloudinary responsive function if the image is in view
+  // Using the intersectionObserver
+  image.src = 'http://res.cloudinary.com/dpehzqvvx/image/upload/placeholder-img.jpg' // Use placeholder image
+  image.setAttribute("data-src", DBHelper.imageUrlForRestaurant(restaurant));
   image.alt = `Picture of the restaurant called ${restaurant.name}`;
 
   const cuisine = document.getElementById('restaurant-cuisine');
@@ -75,6 +81,9 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   addFavoriteListener();
   addFormListener(restaurant);
+
+  DBHelper.lazyLoadImages();
+
 }
 
 /**
@@ -145,6 +154,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);
+  
 }
 
 /**

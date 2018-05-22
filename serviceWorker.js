@@ -1,8 +1,22 @@
-const CACHES_NAME = 'assets-v1';
+const CACHES_NAME = 'assets-v3';
 const CACHES = [
 	'/index.html',
 	'/js/main.js',
 	'/css/styles.css',
+  '/img/1.jpg',
+  '/img/2.jpg',
+  '/img/3.jpg',
+  '/img/4.jpg',
+  '/img/5.jpg',
+  '/img/6.jpg',
+  '/img/7.jpg',
+  '/img/8.jpg',
+  '/img/9.jpg',
+  '/img/10.jpg',
+  '/img/heart-empty.svg',
+  '/img/heart-full.svg',
+  '/img/rr.svg',
+  '/img/triangle.svg',
 ];
 
 if('serviceWorker' in navigator) {
@@ -24,32 +38,13 @@ self.addEventListener('install', function(e) {
 
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-
-        if (response) {
+    caches.open(CACHES_NAME).then(function(cache) {
+      return cache.match(event.request).then(function (response) {
+        return response || fetch(event.request).then(function(response) {
+          cache.put(event.request, response.clone());
           return response;
-        }
-
-        let fetchClone = event.request.clone();
-
-        return fetch(fetchClone).then(
-          function(response) {
-
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            let responseToCache = response.clone();
-
-            caches.open(CACHES_NAME)
-              .then(function(cache) {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        );
-      })
-    );
+        });
+      });
+    })
+  );  
 });
