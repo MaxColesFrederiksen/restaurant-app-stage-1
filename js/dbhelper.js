@@ -18,8 +18,6 @@ class DBHelper {
       var cl = cloudinary.Cloudinary.new({cloud_name: "dpehzqvvx"}); 
       // replace 'demo' with your cloud name in the line above 
       cl.responsive();
-    
-     
   }
 
   static lazyLoadImages() {

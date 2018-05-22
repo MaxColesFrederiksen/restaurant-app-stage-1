@@ -83,6 +83,8 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   addFormListener(restaurant);
 
   DBHelper.lazyLoadImages();
+  // DBHelper.fetchReviews(restaurant.id);
+
 
 }
 
@@ -91,6 +93,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
  */
 fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
   const hours = document.getElementById('restaurant-hours');
+
   for (let key in operatingHours) {
     const row = document.createElement('tr');
 
@@ -103,6 +106,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
     row.appendChild(time);
 
     hours.appendChild(row);
+
   }
 }
 
@@ -133,9 +137,8 @@ fillFavoriteHTML = () => {
  * Create all reviews HTML and add them to the webpage.
  */
 
- // DBHelper.fetchReviews(self.restaurant.id)
-
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
