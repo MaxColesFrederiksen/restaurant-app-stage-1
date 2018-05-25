@@ -13,26 +13,37 @@ class DBHelper {
     return `http://localhost:${port}/restaurants`;
   }
 
-  static responsiveImages() {
-      console.log('called responsive images')
-      var cl = cloudinary.Cloudinary.new({cloud_name: "dpehzqvvx"}); 
-      // replace 'demo' with your cloud name in the line above 
-      cl.responsive();
-  }
+  // static responsiveImages() {
+  //     console.log('called responsive images')
+  //     var cl = cloudinary.Cloudinary.new({cloud_name: "dpehzqvvx"}); 
+  //     // replace 'demo' with your cloud name in the line above 
+  //     cl.responsive();
+  // }
 
-  static lazyLoadImages() {
+  static lazyLoadImages(restaurants) {
   var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
   
-  console.log('lazyImages');
+  console.log('lazyImages', restaurants);
   if ("IntersectionObserver" in window) {
     let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
-          let lazyImage = entry.target;
-          lazyImage.src = lazyImage.dataset.src;
-          // lazyImage.srcset = lazyImage.dataset.srcset;
-          lazyImage.classList.remove("lazy");
-          lazyImageObserver.unobserve(lazyImage);
+          
+          if (entry.target.id === 'static_map') {
+            let staticMap = entry.target;
+            console.log(staticMap);
+            document.getElementById('map').style.display = 'block'
+            document.getElementById('static_map').style.display = 'none'
+            staticMap.classList.remove("lazy");
+            lazyImageObserver.unobserve(staticMap);
+          } else {
+            let lazyImage = entry.target;
+            lazyImage.src = lazyImage.dataset.src;
+            lazyImage.srcset = lazyImage.dataset.srcset;
+            lazyImage.classList.remove("lazy");
+            lazyImageObserver.unobserve(lazyImage);
+          }
+          
         }
       });
     });
@@ -86,18 +97,22 @@ class DBHelper {
     DBHelper.createPost({}, `http://localhost:1337/restaurants/${id}/?is_favorite=false`);
   }
 
-  static fetchReviews(restaurantId) {
-    fetch(`http://localhost:1337/reviews/?restaurant_id=${restaurantId}`)
-      .then(response => response.json())
-      .then((reviews) => {
-        console.log(reviews);
-        return reviews
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+  // static fetchReviews(callback) {
+  //   fetch(`http://localhost:1337/reviews`)
+  //     .then(response => response.json())
+  //     .then((reviews) => {
+  //       console.log(reviews);
+  //       DBHelper.insertRestaurantsToDB(reviews)
+  //       return reviews
+  //     })
+  //     .then(reviews => callback(null, reviews))
+  //     .catch(err => {
+  //       console.log('Something went wrong!: ', err);
+  //       callback(err, null);
+  //     }
+  //   );
 
-  }
+  // }
 
 
 
@@ -122,6 +137,22 @@ class DBHelper {
       }
     );
   }
+
+  // static fetchReviewsById(id, callback) {
+  //   // fetch all reviews with proper error handling.
+  //   DBHelper.fetchReviews((error, reviews) => {
+  //     if (error) {
+  //       callback(error, null);
+  //     } else {
+  //       const review = reviews.find(r => r.id == id);
+  //       if (review) { // Got the restaurant
+  //         callback(null, review);
+  //       } else { // Restaurant does not exist in the database
+  //         callback('Review does not exist', null);
+  //       }
+  //     }
+  //   });
+  // }
 
    static insertRestaurantsToDB(restaurants) {
       let DB_NAME = 'db-v4'
@@ -289,8 +320,12 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    // return (`/img/${restaurant.id}.jpg`);
-    return (`http://res.cloudinary.com/dpehzqvvx/image/upload/c_scale,w_auto/${restaurant.id}.jpg`)
+    return (`/img/${restaurant.id}.jpg`);
+    // return (`http://res.cloudinary.com/dpehzqvvx/image/upload/c_scale,w_auto/${restaurant.id}.jpg`)
+  }
+
+  static imageSrcsetUrlForRestaurant(restaurant) {
+    return (`/img_dist/${restaurant.id}-400-small.jpg 400w, /img_dist/${restaurant.id}-800-medium.jpg 800w, /img_dist/${restaurant.id}-1600-large.jpg 1600w`)
   }
 
   /**

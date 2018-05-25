@@ -1,12 +1,15 @@
 let restaurant;
 var map;
 
+console.log(self.restaurant)
 /**
  * Initialize Google map, called from HTML.
  */
 window.initMap = () => {
+  console.log('initing map')
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
+      console.log('something');
       console.error(error);
     } else {
       self.map = new google.maps.Map(document.getElementById('map'), {
@@ -14,11 +17,30 @@ window.initMap = () => {
         center: restaurant.latlng,
         scrollwheel: false
       });
+      // DBHelper.lazyLoadImages();
       // fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+      console.log(restaurant)
     }
   });
 }
+
+
+toggle_map = () => {
+    if (document.getElementById('map').style.display === 'none')
+      document.getElementById('map').style.display = 'block'
+    else
+      document.getElementById('map').style.display = 'none'
+  }
+
+swap_map = () => {
+    if (document.getElementById('map').style.display === 'none')
+      {
+        document.getElementById('map').style.display = 'block'
+        document.getElementById('static_map').style.display = 'none'
+      }
+  }
+
 
 
 /**
@@ -58,13 +80,13 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'cld-responsive'
+  // image.className = 'cld-responsive'
+  image.className += 'lazy';
   image.className += ' restaurant-img'
-  image.className += ' lazy';
-  //only call the cloudinary responsive function if the image is in view
-  // Using the intersectionObserver
-  image.src = 'http://res.cloudinary.com/dpehzqvvx/image/upload/placeholder-img.jpg' // Use placeholder image
+  image.src = `/img/placeholder-img.jpg`
+  image.srcset = `/img_dist/placeholder-img-400-small.jpg 400w, /img_dist/placeholder-img-800-medium.jpg 800w, img_dist/placeholder-img-1600-large.jpg 1600w,`
   image.setAttribute("data-src", DBHelper.imageUrlForRestaurant(restaurant));
+  image.setAttribute("data-srcset", DBHelper.imageSrcsetUrlForRestaurant(restaurant))
   image.alt = `Picture of the restaurant called ${restaurant.name}`;
 
   const cuisine = document.getElementById('restaurant-cuisine');
@@ -83,7 +105,9 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   addFormListener(restaurant);
 
   DBHelper.lazyLoadImages();
-  // DBHelper.fetchReviews(restaurant.id);
+  
+  
+  
 
 
 }
@@ -137,16 +161,19 @@ fillFavoriteHTML = () => {
  * Create all reviews HTML and add them to the webpage.
  */
 
-fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+fillReviewsHTML = (reviews) => {
 
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
-  console.log(reviews)
-
+  
+  // let reviews = DBHelper.fetchReviewsById(self.restaurant.id, (null));
+  // console.log(reviews)
+  
   if (!reviews) {
+    console.log('no reviews');
     const noReviews = document.createElement('p');
     noReviews.innerHTML = 'No reviews yet!';
     container.appendChild(noReviews);

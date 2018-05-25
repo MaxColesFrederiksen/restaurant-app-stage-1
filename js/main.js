@@ -14,6 +14,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 
+toggle_map = () => {
+    if (document.getElementById('map').style.display === 'none')
+      document.getElementById('map').style.display = 'block'
+    else
+      document.getElementById('map').style.display = 'none'
+  }
+
+swap_map = () => {
+    if (document.getElementById('map').style.display === 'none')
+      {
+        document.getElementById('map').style.display = 'block'
+        document.getElementById('static_map').style.display = 'none'
+      }
+  }
+
+
+
 /**
  * Fetch all neighborhoods and set their HTML.
  */
@@ -131,13 +148,13 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
+  // addMap();
   addMarkersToMap();
   addFavoriteListener();
-  DBHelper.lazyLoadImages();
-  console.log(document.querySelector('.card'));
-  if (document.querySelector('.card')) {
-    DBHelper.responsiveImages();
-  }
+  DBHelper.lazyLoadImages(restaurants);
+  // if (document.querySelector('.card')) {
+  //   DBHelper.responsiveImages();
+  // }
 
 }
 
@@ -151,11 +168,19 @@ createRestaurantHTML = (restaurant) => {
   
 
   const image = document.createElement('img');
-  image.className = 'cld-responsive'
+  // image.className = 'cld-responsive'
+  image.className += 'lazy';
   image.className += ' restaurant-img'
-  image.className += ' lazy';
-  image.src = 'http://res.cloudinary.com/dpehzqvvx/image/upload/placeholder-img.jpg' // Use placeholder image
+  image.src = `/img/placeholder-img.jpg`
+  image.srcset = `/img_dist/placeholder-img-400-small.jpg 400w, /img_dist/placeholder-img-800-medium.jpg 800w, img_dist/placeholder-img-1600-large.jpg 1600w,`
+  // srcset dynamic
+  // Set placeholder image srcset
+  // then change it with {restaurant.id} in the interactionObserver
+
+
+  // image.src = 'http://res.cloudinary.com/dpehzqvvx/image/upload/placeholder-img.jpg' // Use placeholder image
   image.setAttribute("data-src", DBHelper.imageUrlForRestaurant(restaurant))
+  image.setAttribute("data-srcset", DBHelper.imageSrcsetUrlForRestaurant(restaurant))
   image.alt = `Picture from the restaurant called ${restaurant.name}`;
   card.append(image);
   li.append(card);
@@ -197,8 +222,6 @@ createRestaurantHTML = (restaurant) => {
   }
   card.append(favorite);
   li.append(card);
-
-
   
   return li
 }
@@ -216,6 +239,8 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
+
+
 
 
 addFavoriteListener = () => {

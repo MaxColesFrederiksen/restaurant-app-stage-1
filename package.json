@@ -1,0 +1,29 @@
+{
+  "name": "restaurant-app-stage-1",
+  "version": "1.0.0",
+  "description": "--- #### _Three Stage Course Material Project - Restaurant Reviews_",
+  "main": "serviceWorker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxColesFrederiksen/restaurant-app-stage-1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaxColesFrederiksen/restaurant-app-stage-1/issues"
+  },
+  "homepage": "https://github.com/MaxColesFrederiksen/restaurant-app-stage-1#readme",
+  "devDependencies": {
+    "gm": "^1.23.1",
+    "grunt": "^1.0.2",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-nodeunit": "^2.0.0",
+    "grunt-contrib-uglify": "^3.3.0",
+    "grunt-mkdir": "^1.0.0",
+    "grunt-responsive-images": "^1.10.1"
+  }
+}

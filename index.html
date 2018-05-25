@@ -8,9 +8,124 @@
   <meta name="theme-color" content="#FFAE00">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <link rel="stylesheet" href="css/styles.css">
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="css/fonts.css"> -->
+<!--   <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet"> -->
   <link rel="manifest" href="/manifest.json">
+
+  <style>
+    @font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato-Black.woff2') format('woff2'),
+        url('../fonts/Lato-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Lato';
+        src: url('../fonts/Lato-BoldItalic.woff2') format('woff2'),
+            url('../fonts/Lato-BoldItalic.woff') format('woff');
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    @font-face {
+        font-family: 'Lora';
+        src: url('../fonts/Lora-Regular.woff2') format('woff2'),
+            url('../fonts/Lora-Regular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Lato Hairline';
+        src: url('../fonts/Lato-HairlineItalic.woff2') format('woff2'),
+            url('../fonts/Lato-HairlineItalic.woff') format('woff');
+        font-weight: 300;
+        font-style: italic;
+    }
+
+    @font-face {
+        font-family: 'Lora';
+        src: url('../fonts/Lora-Bold.woff2') format('woff2'),
+            url('../fonts/Lora-Bold.woff') format('woff');
+        font-weight: bold;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Lora';
+        src: url('../fonts/Lora-Italic.woff2') format('woff2'),
+            url('../fonts/Lora-Italic.woff') format('woff');
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    @font-face {
+        font-family: 'Lato';
+        src: url('../fonts/Lato-BlackItalic.woff2') format('woff2'),
+            url('../fonts/Lato-BlackItalic.woff') format('woff');
+        font-weight: 900;
+        font-style: italic;
+    }
+
+    @font-face {
+        font-family: 'Lato';
+        src: url('../fonts/Lato-Regular.woff2') format('woff2'),
+            url('../fonts/Lato-Regular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Lato Hairline';
+        src: url('../fonts/Lato-Hairline.woff2') format('woff2'),
+            url('../fonts/Lato-Hairline.woff') format('woff');
+        font-weight: 300;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Lato';
+        src: url('../fonts/Lato-Italic.woff2') format('woff2'),
+            url('../fonts/Lato-Italic.woff') format('woff');
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    @font-face {
+        font-family: 'Lora';
+        src: url('../fonts/Lora-BoldItalic.woff2') format('woff2'),
+            url('../fonts/Lora-BoldItalic.woff') format('woff');
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    @font-face {
+        font-family: 'Lato';
+        src: url('../fonts/Lato-LightItalic.woff2') format('woff2'),
+            url('../fonts/Lato-LightItalic.woff') format('woff');
+        font-weight: 300;
+        font-style: italic;
+    }
+
+    @font-face {
+        font-family: 'Lato';
+        src: url('../fonts/Lato-Light.woff2') format('woff2'),
+            url('../fonts/Lato-Light.woff') format('woff');
+        font-weight: 300;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'Lato';
+        src: url('../fonts/Lato-Bold.woff2') format('woff2'),
+            url('../fonts/Lato-Bold.woff') format('woff');
+        font-weight: bold;
+        font-style: normal;
+    }
+  </style>
 
 
   <title>Restaurant Reviews</title>
@@ -57,7 +172,16 @@
       </div>
 
       <section id="map-container">
-        <div id="map" role="application"></div>
+        <!-- <div id="map" role="application"></div> -->
+        <img id="static_map"
+             class="lazy"
+             onclick="swap_map()"
+             alt="static image of google maps"
+             data-src="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,-73.987501&zoom=12&size=500x300&format=jpg&maptype=roadmap
+            &markers=color:red%7Clabel:S%7C40.722216,-73.98750&key=AIzaSyAsggoUe5zy3jLXhAo-kYQ8xmgpTi377Ec"
+             src="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,-73.987501&zoom=12&size=500x300&format=jpg&maptype=roadmap
+            &markers=color:red%7Clabel:S%7C40.722216,-73.98750&key=AIzaSyAsggoUe5zy3jLXhAo-kYQ8xmgpTi377Ec"></img>
+        <div id="map" style="display: none" role="application"></div>
       </section>
     </section>
   </main>
@@ -66,14 +190,12 @@
 
   <script src="https://polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-core/2.5.0/cloudinary-core-shrinkwrap.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cloudinary-core/2.5.0/cloudinary-core-shrinkwrap.js"></script> -->
 
 
   <script charset="utf-8" src="/serviceWorker.js"></script>
   <script charset="utf-8" src="js/dbhelper.js"></script>
   <script charset="utf-8" src="js/main.js"></script>
-
-
 
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDcKapHsIfR0BlM5eMsKWk4RfpnTdVyWE&libraries=places&callback=initMap" data-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDcKapHsIfR0BlM5eMsKWk4RfpnTdVyWE&libraries=places&callback=initMap" rel="noopener"></script>
 

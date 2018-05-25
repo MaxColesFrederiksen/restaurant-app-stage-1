@@ -269,7 +269,7 @@ select::-ms-expand {
   -webkit-appearance: none; 
   -moz-appearance: none;
   appearance: none;       /* remove default arrow */
-  background-image: url('../img/triangle.svg');
+  background-image: url('../img_src/triangle.svg');
   background-position: 90% 50%;
   background-size: 15px;
   background-repeat: no-repeat;
@@ -381,7 +381,7 @@ select::-ms-expand {
 
 .inside #map-container {
   display: block;
-  background: blue none repeat scroll 0 0;
+  background: grey none repeat scroll 0 0;
   height: 300px;
   width: 100%;
   position: absolute;
@@ -780,14 +780,14 @@ select::-ms-expand {
   
   width: 32px;
   height: 28px;
-  background-image: url('../img/heart-empty.svg');
+  background-image: url('../img_src/heart-empty.svg');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
 }
 
 .favorited {
-  background-image: url('../img/heart-full.svg');
+  background-image: url('../img_src/heart-full.svg');
 }
 
 #restaurant-container i {
