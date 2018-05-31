@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="theme-color" content="#FFAE00">
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles-min.css">
   <!-- <link rel="stylesheet" href="css/fonts.css"> -->
 <!--   <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lora:400,700" rel="stylesheet"> -->
@@ -171,17 +171,17 @@
         <h2 class="content-header">Locations</h2>  
       </div>
 
-      <section id="map-container">
+      <section id="map-container" aria-label="location" role="application">
         <!-- <div id="map" role="application"></div> -->
         <img id="static_map"
              class="lazy"
              onclick="swap_map()"
              alt="static image of google maps"
              data-src="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,-73.987501&zoom=12&size=500x300&format=jpg&maptype=roadmap
-            &markers=color:red%7Clabel:S%7C40.722216,-73.98750&key=AIzaSyAsggoUe5zy3jLXhAo-kYQ8xmgpTi377Ec"
+            &markers=color:red%7Clabel:S%7C40.722216,-73.98750"
              src="https://maps.googleapis.com/maps/api/staticmap?center=40.722216,-73.987501&zoom=12&size=500x300&format=jpg&maptype=roadmap
-            &markers=color:red%7Clabel:S%7C40.722216,-73.98750&key=AIzaSyAsggoUe5zy3jLXhAo-kYQ8xmgpTi377Ec"></img>
-        <div id="map" style="display: none" role="application"></div>
+            &markers=color:red%7Clabel:S%7C40.722216,-73.98750"></img>
+        <div id="map" style="display: none" aria-label="location" role="application"></div>
       </section>
     </section>
   </main>
@@ -197,7 +197,9 @@
   <script charset="utf-8" src="js/dbhelper.js"></script>
   <script charset="utf-8" src="js/main.js"></script>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDcKapHsIfR0BlM5eMsKWk4RfpnTdVyWE&libraries=places&callback=initMap" data-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDcKapHsIfR0BlM5eMsKWk4RfpnTdVyWE&libraries=places&callback=initMap" rel="noopener"></script>
+  <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDcKapHsIfR0BlM5eMsKWk4RfpnTdVyWE&callback=initMap">
+  </script>
 
 
 

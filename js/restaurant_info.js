@@ -5,6 +5,24 @@ console.log(self.restaurant)
 /**
  * Initialize Google map, called from HTML.
  */
+
+
+toggle_map = () => {
+    if (document.getElementById('map').style.display === 'none')
+      document.getElementById('map').style.display = 'block'
+    else
+      document.getElementById('map').style.display = 'none'
+  }
+
+swap_map = () => {
+    if (document.getElementById('map').style.display === 'none')
+      {
+        document.getElementById('map').style.display = 'block'
+        document.getElementById('static_map').style.display = 'none'
+      }
+  }
+
+
 window.initMap = () => {
   console.log('initing map')
   fetchRestaurantFromURL((error, restaurant) => {
@@ -26,20 +44,6 @@ window.initMap = () => {
 }
 
 
-toggle_map = () => {
-    if (document.getElementById('map').style.display === 'none')
-      document.getElementById('map').style.display = 'block'
-    else
-      document.getElementById('map').style.display = 'none'
-  }
-
-swap_map = () => {
-    if (document.getElementById('map').style.display === 'none')
-      {
-        document.getElementById('map').style.display = 'block'
-        document.getElementById('static_map').style.display = 'none'
-      }
-  }
 
 
 
@@ -65,6 +69,14 @@ fetchRestaurantFromURL = (callback) => {
       fillRestaurantHTML();
       callback(null, restaurant)
     });
+    DBHelper.fetchReviewsById(id, (error, reviews) => {
+      if (!reviews) {
+        console.error(error);
+        return;
+      }
+      fillReviewsHTML(reviews)
+      callback(null, reviews)
+    })
   }
 }
 
@@ -168,9 +180,7 @@ fillReviewsHTML = (reviews) => {
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
-  
-  // let reviews = DBHelper.fetchReviewsById(self.restaurant.id, (null));
-  // console.log(reviews)
+  console.log(reviews)
   
   if (!reviews) {
     console.log('no reviews');

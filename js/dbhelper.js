@@ -97,22 +97,22 @@ class DBHelper {
     DBHelper.createPost({}, `http://localhost:1337/restaurants/${id}/?is_favorite=false`);
   }
 
-  // static fetchReviews(callback) {
-  //   fetch(`http://localhost:1337/reviews`)
-  //     .then(response => response.json())
-  //     .then((reviews) => {
-  //       console.log(reviews);
-  //       DBHelper.insertRestaurantsToDB(reviews)
-  //       return reviews
-  //     })
-  //     .then(reviews => callback(null, reviews))
-  //     .catch(err => {
-  //       console.log('Something went wrong!: ', err);
-  //       callback(err, null);
-  //     }
-  //   );
+  static fetchReviews(callback) {
+    fetch(`http://localhost:1337/reviews`)
+      .then(response => response.json())
+      .then((reviews) => {
+        console.log(reviews);
+        DBHelper.insertRestaurantsToDB(reviews)
+        return reviews
+      })
+      .then(reviews => callback(null, reviews))
+      .catch(err => {
+        console.log('Something went wrong!: ', err);
+        callback(err, null);
+      }
+    );
 
-  // }
+  }
 
 
 
@@ -138,21 +138,21 @@ class DBHelper {
     );
   }
 
-  // static fetchReviewsById(id, callback) {
-  //   // fetch all reviews with proper error handling.
-  //   DBHelper.fetchReviews((error, reviews) => {
-  //     if (error) {
-  //       callback(error, null);
-  //     } else {
-  //       const review = reviews.find(r => r.id == id);
-  //       if (review) { // Got the restaurant
-  //         callback(null, review);
-  //       } else { // Restaurant does not exist in the database
-  //         callback('Review does not exist', null);
-  //       }
-  //     }
-  //   });
-  // }
+  static fetchReviewsById(id, callback) {
+    // fetch all reviews with proper error handling.
+    DBHelper.fetchReviews((error, reviews) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        const review = reviews.find(r => r.id == id);
+        if (review) { // Got the restaurant
+          callback(null, review);
+        } else { // Restaurant does not exist in the database
+          callback('Review does not exist', null);
+        }
+      }
+    });
+  }
 
    static insertRestaurantsToDB(restaurants) {
       let DB_NAME = 'db-v4'
