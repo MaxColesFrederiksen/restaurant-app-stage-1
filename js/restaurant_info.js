@@ -186,9 +186,14 @@ fillReviewsHTML = (reviews) => {
     console.log('no reviews');
     const noReviews = document.createElement('p');
     noReviews.innerHTML = 'No reviews yet!';
+    noReviews.className = 'no-reviews';
     container.appendChild(noReviews);
     return;
   }
+  const noReviewsEl = document.querySelector('.no-reviews');
+  console.log(noReviewsEl)
+  container.removeChild(noReviewsEl);
+  container.removeChild(title);
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));

@@ -1,4 +1,4 @@
-const CACHES_NAME = 'assets-v5';
+const CACHES_NAME = 'assets-v6';
 const CACHES = [
 	'/index.html',
 	'/js/main.js',
