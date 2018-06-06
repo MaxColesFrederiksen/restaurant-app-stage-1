@@ -435,14 +435,12 @@ select::-ms-expand {
 }
 #restaurant-container, #reviews-container {
   padding: 0 20px;
-
   width: 100%;
 }
 #reviews-container {
   padding: 20px 20px;
 }
 #reviews-container h3 {
-
   color: white;
   background: #ffae00;
   text-align: center;
@@ -450,7 +448,6 @@ select::-ms-expand {
   font-size: 2em;
   font-weight: 300;
   padding: 0;
-
 }
 
 #reviews-container p {
@@ -459,7 +456,9 @@ select::-ms-expand {
 
 #reviews-list {
   margin: 0;
-  padding: 0;
+  padding: 20px 0;
+  margin: 0 auto;
+  max-width: 600px;
 }
 #reviews-list li {
   font-family: 'Lato', sans-serif;
@@ -477,6 +476,7 @@ select::-ms-expand {
 #reviews-list li p {
   font-family: 'Lato', sans-serif;
   margin-left: 15px;
+  margin-right: 10px;
   line-height: 1.5em;
 }
 

@@ -3,7 +3,7 @@ let restaurants,
   cuisines
 var map
 var markers = []
-let DB_NAME = 'db-v1'
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -105,6 +105,7 @@ window.initMap = () => {
 /**
  * Update page and map for current restaurants.
  */
+ 
 updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');

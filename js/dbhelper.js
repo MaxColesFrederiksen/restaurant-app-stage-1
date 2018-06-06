@@ -3,6 +3,7 @@
  */
 class DBHelper {
 
+  
 
   /**
    * Database URL.
@@ -13,17 +14,22 @@ class DBHelper {
     return `http://localhost:${port}/restaurants`;
   }
 
-  // static responsiveImages() {
-  //     console.log('called responsive images')
-  //     var cl = cloudinary.Cloudinary.new({cloud_name: "dpehzqvvx"}); 
-  //     // replace 'demo' with your cloud name in the line above 
-  //     cl.responsive();
-  // }
+  static get DB_NAME() {
+    let DB_NAME = 'db-v5'
+    return DB_NAME;
+  }
+
+  static get DB_VERSION() {
+    let DB_VERSION = 5
+    return DB_VERSION;
+  }
+
+
 
   static lazyLoadImages(restaurants) {
   var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
   
-  console.log('lazyImages', restaurants);
+  
   if ("IntersectionObserver" in window) {
     let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
       entries.forEach(function(entry) {
@@ -31,7 +37,7 @@ class DBHelper {
           
           if (entry.target.id === 'static_map') {
             let staticMap = entry.target;
-            console.log(staticMap);
+            
             document.getElementById('map').style.display = 'block'
             document.getElementById('static_map').style.display = 'none'
             staticMap.classList.remove("lazy");
@@ -69,6 +75,7 @@ class DBHelper {
    static updateReview(reviewObj, id) {
     
     DBHelper.createPost(reviewObj, `http://localhost:1337/reviews/${id}`);
+
    }
 
 
@@ -82,15 +89,14 @@ class DBHelper {
       return response.json();
     }).then(function(data) {
       console.log('Created Post Body:', data);
+      window.location.reload(true);
     });
   }
 
 
 
    static favoriteRestaurant(id) {
-  
     DBHelper.createPost({}, `http://localhost:1337/restaurants/${id}/?is_favorite=true`);
-     
    }
 
   static unFavoriteRestaurant(id) {
@@ -101,8 +107,8 @@ class DBHelper {
     fetch(`http://localhost:1337/reviews?restaurant_id=${id}`)
       .then(response => response.json())
       .then((reviewsResponse) => {
-        console.log(reviewsResponse);
-        DBHelper.insertRestaurantsToDB(reviewsResponse)
+        console.log(reviewsResponse, 'review response');
+        DBHelper.insertDataToDB(reviewsResponse)
         return reviewsResponse
       })
       .then(reviewsResponse => callback(null, reviewsResponse))
@@ -111,34 +117,9 @@ class DBHelper {
         callback(err, null);
       }
     );
-
   }
 
-
-
-  /**
-   * Fetch all restaurants.
-   */
-
-
-  static fetchRestaurants(callback) {
-    fetch(DBHelper.DATABASE_URL)
-      .then(response => response.json())
-      .then((restaurants) => {
-        console.log(restaurants)
-        DBHelper.insertRestaurantsToDB(restaurants) // insert a fresh copy from server into indexeddb
-        return restaurants
-      })
-      .then(restaurants => callback(null, restaurants))
-      .catch(err => {
-        // Fetch from indexdb when network is not available
-        console.log('Something went wrong!: ', err);
-        callback(err, null);
-      }
-    );
-  }
-
-  static fetchReviewsById(id, callback) {
+    static fetchReviewsById(id, callback) {
     // fetch all reviews with proper error handling.
     DBHelper.fetchReviews(id, (error, reviews) => {
       if (error) {
@@ -153,22 +134,66 @@ class DBHelper {
     });
   }
 
-   static insertRestaurantsToDB(restaurants) {
-      let DB_NAME = 'db-v4'
+  /**
+   * Fetch all restaurants.
+   */
 
-      let dbPromise = idb.open(DB_NAME, 4, function(upgradeDb) {
+
+  static fetchRestaurants(callback) {
+    fetch(DBHelper.DATABASE_URL)
+      .then(response => response.json())
+      .then((restaurants) => {
+        console.log(restaurants)
+        DBHelper.insertDataToDB(restaurants) // insert a fresh copy from server into indexeddb
+        return restaurants
+      })
+      .then(restaurants => callback(null, restaurants))
+      .catch(err => {
+        // Fetch from indexdb when network is not available
+        console.log('Something went wrong!: ', err);
+        callback(err, null);
+      }
+    );
+  }
+
+   static insertDataToDB(data) {
+
+      let dbPromise = idb.open(DBHelper.DB_NAME, DBHelper.DB_VERSION, function(upgradeDb) {
         switch(upgradeDb.oldVersion) {
           case 0:
             upgradeDb.createObjectStore('restaurants' ,{keyPath: 'id'});
           case 1:
-            upgradeDb.createObjectStore('reviews' ,{keyPath: 'restaurant_id'});
+            upgradeDb.createObjectStore('reviews' ,{ keyPath: 'id', autoIncrement: true});
           }
       });
+      
+      // if data is reviews
+      if (data[0].comments) {
 
-      dbPromise.then(function(db) {
+          dbPromise.then(function(db) {
+            let tx = db.transaction('reviews', 'readwrite');
+            let store = tx.objectStore('reviews');
+            
+            let reviews = data;
+
+            console.log(store.autoIncrement)
+
+            for (let review of reviews) {
+              store.put(review);
+            }
+
+            return tx.complete;
+          }).then(function() {
+            console.log('added reviews!');
+          });
+
+      } else {
+
+        dbPromise.then(function(db) {
         let tx = db.transaction('restaurants', 'readwrite');
         let store = tx.objectStore('restaurants');
-        
+
+        let restaurants = data;
       
         for (let restaurant of restaurants) {
           // console.log(restaurant)
@@ -180,23 +205,12 @@ class DBHelper {
         console.log('added restaurants!');
       });
 
-      dbPromise.then(function(db) {
-        let tx = db.transaction('reviews', 'readwrite');
-        let store = tx.objectStore('reviews');
-        
-        for (let restaurant of restaurants) {
-          
-          let reviews = restaurant.reviews;
-          console.log(reviews)
-          store.put({restaurant_id: restaurant.id, reviews: reviews});
-        }
-
-        return tx.complete;
-      }).then(function() {
-        console.log('added reviews!');
-      });
+      }
 
    }
+
+
+
 
 
   /**

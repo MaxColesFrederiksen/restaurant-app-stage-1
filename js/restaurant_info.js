@@ -1,7 +1,8 @@
 let restaurant;
 var map;
+let status;
 
-console.log(self.restaurant)
+
 /**
  * Initialize Google map, called from HTML.
  */
@@ -24,7 +25,6 @@ swap_map = () => {
 
 
 window.initMap = () => {
-  console.log('initing map')
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
       console.log('something');
@@ -38,7 +38,6 @@ window.initMap = () => {
       // DBHelper.lazyLoadImages();
       // fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
-      console.log(restaurant)
     }
   });
 }
@@ -75,7 +74,6 @@ fetchRestaurantFromURL = (callback) => {
         return;
       }
       fillReviewsHTML(reviews)
-      callback(null, reviews)
     })
   }
 }
@@ -179,8 +177,6 @@ fillReviewsHTML = (reviews) => {
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
-
-  console.log(reviews)
   
   if (!reviews) {
     console.log('no reviews');
@@ -191,7 +187,6 @@ fillReviewsHTML = (reviews) => {
     return;
   }
   const noReviewsEl = document.querySelector('.no-reviews');
-  console.log(noReviewsEl)
   container.removeChild(noReviewsEl);
   container.removeChild(title);
   const ul = document.getElementById('reviews-list');
@@ -212,7 +207,26 @@ createReviewHTML = (review) => {
   const name = document.createElement('p');
   name.innerHTML = review.name;
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+
+  let d = new Date(review.createdAt);
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];
+
+
+  date.innerHTML = `${d.getDate() > 3 ? d.getDate() + 'th' : d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()} `;
+  
+  if (d.getDate() == 3) {
+
+    date.innerHTML = `${d.getDate()}rd ${monthNames[d.getMonth()]} ${d.getFullYear()}`
+  }
+  
+  if (d.getDate() == 2) {
+    date.innerHTML = `${d.getDate()}nd ${monthNames[d.getMonth()]} ${d.getFullYear()}`
+  }
+
+  if (d.getDate() == 1) {
+    date.innerHTML = `${d.getDate()}st ${monthNames[d.getMonth()]} ${d.getFullYear()}`
+  }
   
   bar.appendChild(name);
   bar.appendChild(date);
@@ -296,6 +310,18 @@ addFavoriteListener = () => {
   })
 }
 
+
+window.addEventListener('load', function() {
+  function updateOnlineStatus(event) {
+    var condition = navigator.onLine ? "online" : "offline";
+    status = condition;
+    console.log(status)
+  }
+  
+  window.addEventListener('online',  updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+});
+
 addFormListener = (restaurant) => {
   const submit = document.querySelector('.review-submit');
   const nameInput = document.querySelector('.review-name');
@@ -309,14 +335,30 @@ addFormListener = (restaurant) => {
     let rating = $("#rating").rateYo("rating");
     let comment = commentTextarea.value;
 
-    let reviewObj = {
+    let reviewObj = [{
       "restaurant_id": id,
       "name": name,
       "rating": rating,
       "comments": comment
+    }]
+    
+    // Check if user is offline or online before submitting
+    // if user is online send review as normal
+    // Else send the review to the database
+    // And notify user that the review will update once the re-connect to internet
+    if (status !== 'online') {
+      console.log(reviewObj)
+
+      DBHelper.insertDataToDB(reviewObj)
+      alert('Your review has been saved, and will be submitted once your are connected to the internet')
+    } else {
+      DBHelper.postReview(reviewObj);
     }
-    // DBHelper.postReview(reviewObj);
-    DBHelper.updateReview(reviewObj, id);
+
+
+
+    
+    
   });
 }
 

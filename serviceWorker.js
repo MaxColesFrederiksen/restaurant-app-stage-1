@@ -1,4 +1,4 @@
-const CACHES_NAME = 'assets-v6';
+const CACHES_NAME = 'assets-v7';
 const CACHES = [
 	'/index.html',
 	'/js/main.js',
@@ -48,3 +48,4 @@ self.addEventListener('fetch', function(event) {
     })
   );  
 });
+
