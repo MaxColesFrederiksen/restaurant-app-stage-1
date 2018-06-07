@@ -66,6 +66,16 @@ class DBHelper {
   /**
    * Post a review
    */
+   static postReviews(reviewsObj) {
+    console.log(reviewsObj);
+    for (let review of reviewsObj) {
+      DBHelper.createPost(review, `http://localhost:1337/reviews/${review.id}`);
+    }
+   }
+   // static putReview(reviewObj, id) {
+   //  // console.log(JSON.stringify(reviewObj))
+   //  DBHelper.createPost(reviewObj, `http://localhost:1337/reviews/${id}`);
+   // }
 
    static postReview(reviewObj) {
     // console.log(JSON.stringify(reviewObj))
@@ -77,8 +87,6 @@ class DBHelper {
     DBHelper.createPost(reviewObj, `http://localhost:1337/reviews/${id}`);
 
    }
-
-
 
   static createPost(opts, url) {
     console.log('Creating post body');
@@ -210,7 +218,26 @@ class DBHelper {
    }
 
 
+  static fetchReviewsFromDatabase() {
 
+      let dbPromise = idb.open(DBHelper.DB_NAME, DBHelper.DB_VERSION);
+
+      dbPromise.then(function(db) {
+        let tx = db.transaction('reviews', 'readwrite');
+        let store = tx.objectStore('reviews');
+        
+
+        // store.getAll().then(function(s){console.log(s)});
+
+        return store.getAll();
+      }).then(function(val) {
+        
+        console.log('got all reviews from database!', val)
+        DBHelper.postReviews(val);
+        return val;
+      })
+
+  }
 
 
   /**

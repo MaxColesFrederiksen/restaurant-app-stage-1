@@ -315,7 +315,11 @@ window.addEventListener('load', function() {
   function updateOnlineStatus(event) {
     var condition = navigator.onLine ? "online" : "offline";
     status = condition;
-    console.log(status)
+    
+    if (status === 'online') {
+      
+      DBHelper.fetchReviewsFromDatabase()
+    }
   }
   
   window.addEventListener('online',  updateOnlineStatus);
