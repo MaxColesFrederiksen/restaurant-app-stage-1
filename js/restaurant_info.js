@@ -317,8 +317,7 @@ window.addEventListener('load', function() {
     status = condition;
     
     if (status === 'online') {
-      
-      DBHelper.fetchReviewsFromDatabase()
+      DBHelper.syncReviewsFromDatabase()
     }
   }
   
@@ -353,7 +352,7 @@ addFormListener = (restaurant) => {
     if (status !== 'online') {
       console.log(reviewObj)
 
-      DBHelper.insertDataToDB(reviewObj)
+      DBHelper.insertOfflineReview(reviewObj)
       alert('Your review has been saved, and will be submitted once your are connected to the internet')
     } else {
       DBHelper.postReview(reviewObj);

@@ -172,6 +172,8 @@ class DBHelper {
             upgradeDb.createObjectStore('restaurants' ,{keyPath: 'id'});
           case 1:
             upgradeDb.createObjectStore('reviews' ,{ keyPath: 'id', autoIncrement: true});
+          case 2:
+            upgradeDb.createObjectStore('sync-reviews' ,{ keyPath: 'id', autoIncrement: true});
           }
       });
       
@@ -217,14 +219,41 @@ class DBHelper {
 
    }
 
+  static insertOfflineReview(review) {
+    
+      let dbPromise = idb.open(DBHelper.DB_NAME, DBHelper.DB_VERSION)
 
-  static fetchReviewsFromDatabase() {
+      dbPromise.then(function(db) {
+        let tx = db.transaction('sync-reviews', 'readwrite');
+        let store = tx.objectStore('sync-reviews');
+
+        console.log(review);
+        store.put(review);
+        
+
+        return tx.complete;
+      }).then(function() {
+        console.log('added review to sync-review objectstore!');
+      });
+      // switch statement
+      // create objectstore 'sync-reviews'
+      // post reviews to objectstore
+
+
+
+  }
+
+
+  static syncReviewsFromDatabase() {
+
+      // Sync reviews from sync-reviews
+      // then post reviews to server
 
       let dbPromise = idb.open(DBHelper.DB_NAME, DBHelper.DB_VERSION);
 
       dbPromise.then(function(db) {
-        let tx = db.transaction('reviews', 'readwrite');
-        let store = tx.objectStore('reviews');
+        let tx = db.transaction('sync-reviews', 'readwrite');
+        let store = tx.objectStore('sync-reviews');
         
 
         // store.getAll().then(function(s){console.log(s)});
@@ -232,9 +261,9 @@ class DBHelper {
         return store.getAll();
       }).then(function(val) {
         
-        console.log('got all reviews from database!', val)
+        console.log('got all sync-reviews!', val)
         DBHelper.postReviews(val);
-        return val;
+        
       })
 
   }
