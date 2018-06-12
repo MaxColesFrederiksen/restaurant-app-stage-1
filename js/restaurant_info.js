@@ -314,23 +314,27 @@ addFavoriteListener = () => {
 window.addEventListener('load', function() {
   function updateOnlineStatus(event) {
     var condition = navigator.onLine ? "online" : "offline";
-    status = condition;
+    this.status = condition;
     
-    if (status === 'online') {
+    if (this.status === 'online') {
+      console.log('online again sync reviews')
       DBHelper.syncReviewsFromDatabase()
     }
   }
+  updateOnlineStatus();
   
   window.addEventListener('online',  updateOnlineStatus);
   window.addEventListener('offline', updateOnlineStatus);
 });
 
 addFormListener = (restaurant) => {
-  const submit = document.querySelector('.review-submit');
+  const form = document.getElementById('reviews-form');
   const nameInput = document.querySelector('.review-name');
   const commentTextarea = document.querySelector('.review-comment');
 
-  submit.addEventListener('click', function(e){
+  const self = this;
+
+  form.addEventListener('submit', function(e){
     e.preventDefault();
 
     let id = restaurant.id;
@@ -349,19 +353,17 @@ addFormListener = (restaurant) => {
     // if user is online send review as normal
     // Else send the review to the database
     // And notify user that the review will update once the re-connect to internet
-    if (status !== 'online') {
-      console.log(reviewObj)
+
+    if (self.status !== 'online') {
 
       DBHelper.insertOfflineReview(reviewObj)
       alert('Your review has been saved, and will be submitted once your are connected to the internet')
     } else {
-      DBHelper.postReview(reviewObj);
+
+      console.log('postReview', self.status)
+      // DBHelper.postReview(reviewObj);
     }
 
-
-
-    
-    
   });
 }
 

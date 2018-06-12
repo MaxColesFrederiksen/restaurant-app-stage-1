@@ -19,6 +19,8 @@ const CACHES = [
   '/img_src/triangle.svg',
 ];
 
+caches.delete(CACHES_NAME);
+
 if('serviceWorker' in navigator) {
   navigator.serviceWorker
   	.register('/serviceWorker.js')
@@ -36,13 +38,17 @@ self.addEventListener('install', function(e) {
 	 );
 });
 
+
 self.addEventListener('fetch', function(event) {
+
   event.respondWith(
     caches.open(CACHES_NAME).then(function(cache) {
       return cache.match(event.request).then(function (response) {
         return response || fetch(event.request).then(function(response) {
-          cache.put(event.request, response.clone());
-          return response;
+          if (event.request.method !== "POST") {
+            cache.put(event.request, response.clone());
+            return response;
+          }
         });
       });
     })
