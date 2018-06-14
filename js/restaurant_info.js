@@ -317,7 +317,7 @@ window.addEventListener('load', function() {
     this.status = condition;
     
     if (this.status === 'online') {
-      console.log('online again sync reviews')
+      console.log('user is online, sync reviews')
       DBHelper.syncReviewsFromDatabase()
     }
   }
@@ -342,12 +342,12 @@ addFormListener = (restaurant) => {
     let rating = $("#rating").rateYo("rating");
     let comment = commentTextarea.value;
 
-    let reviewObj = [{
+    let reviewObj = {
       "restaurant_id": id,
       "name": name,
       "rating": rating,
       "comments": comment
-    }]
+    }
     
     // Check if user is offline or online before submitting
     // if user is online send review as normal
@@ -360,8 +360,8 @@ addFormListener = (restaurant) => {
       alert('Your review has been saved, and will be submitted once your are connected to the internet')
     } else {
 
-      console.log('postReview', self.status)
-      // DBHelper.postReview(reviewObj);
+      console.log('posting this review:', reviewObj);
+      DBHelper.postReview(reviewObj);
     }
 
   });

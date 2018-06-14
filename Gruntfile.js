@@ -6,9 +6,19 @@
   "grunt responsive_images" re-processes images without removing the old ones
 */
 
+
+
 module.exports = function(grunt) {
 
   grunt.initConfig({
+    purifycss: {
+      options: {},
+      target: {
+        src: ['/*.html', 'js/*.js'],
+        css: ['css/*.css'],
+        dest: 'purestyles/purestyles.css'
+      },
+    },
     responsive_images: {
       dev: {
         options: {
@@ -71,6 +81,7 @@ module.exports = function(grunt) {
     },
   });
   
+  grunt.loadNpmTasks('grunt-purifycss');
   grunt.loadNpmTasks('grunt-responsive-images');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');

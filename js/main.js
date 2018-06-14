@@ -30,6 +30,16 @@ swap_map = () => {
   }
 
 
+addMapListener = () => {
+  const self = this;
+  document.querySelector('.toggle-map').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    this.classList.toggle('.show-map')
+    self.toggle_map();
+  })
+}
+
 
 /**
  * Fetch all neighborhoods and set their HTML.
@@ -89,6 +99,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
 /**
  * Initialize Google map, called from HTML.
  */
+
 window.initMap = () => {
   let loc = {
     lat: 40.722216,
@@ -105,7 +116,7 @@ window.initMap = () => {
 /**
  * Update page and map for current restaurants.
  */
- 
+
 updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
@@ -152,7 +163,8 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   // addMap();
   addMarkersToMap();
   addFavoriteListener();
-  DBHelper.lazyLoadImages(restaurants);
+  addMapListener();
+  // DBHelper.lazyLoadImages(restaurants);
   // if (document.querySelector('.card')) {
   //   DBHelper.responsiveImages();
   // }

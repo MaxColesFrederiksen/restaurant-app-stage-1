@@ -75,9 +75,9 @@ class DBHelper {
    //  // console.log(JSON.stringify(reviewObj))
    //  DBHelper.createPost(reviewObj, `http://localhost:1337/reviews/${id}`);
    // }
-   static postReviewFromSync(reviewObj) {
-    DBHelper.createSyncPost(reviewObj, 'http://localhost:1337/reviews/');
-   }
+   // static postReviewFromSync(reviewObj) {
+   //  DBHelper.createSyncPost(reviewObj, 'http://localhost:1337/reviews/');
+   // }
 
    static postReview(reviewObj) {
     // console.log(JSON.stringify(reviewObj))
@@ -90,18 +90,18 @@ class DBHelper {
 
    }
 
-   static createSyncPost(opts, url) {
-    console.log('Creating post body');
-    fetch(url, {
-      method: 'post',
-      body: JSON.stringify(opts)
-    }).then(function(response) {
-      return response.json();
-    }).then(function(data) {
-      console.log('Created Post Body:', data);
-      DBHelper.clearSyncStore();
-    });
-  }
+  //  static createSyncPost(opts, url) {
+  //   console.log('Creating post body');
+  //   fetch(url, {
+  //     method: 'post',
+  //     body: JSON.stringify(opts)
+  //   }).then(function(response) {
+  //     return response.json();
+  //   }).then(function(data) {
+  //     console.log('Created Post Body:', data);
+  //     // DBHelper.clearSyncStore();
+  //   });
+  // }
 
   static createPost(opts, url) {
     console.log('Creating post body');
@@ -113,7 +113,10 @@ class DBHelper {
     }).then(function(data) {
       console.log('Created Post Body:', data);
       // window.location.reload(true);
-    });
+    }).then(function(){
+      console.log('Calling clearSyncStore');
+      DBHelper.clearSyncStore();
+    })
   }
 
 
@@ -282,13 +285,31 @@ class DBHelper {
       }).then(function(val) {
         
         console.log('got all sync-reviews!', val)
-
-        if (val.length > 2) {
-          console.log('review obj is more than 2')
-          // DBHelper.postReviewsFromSync(val);
-        }
-        DBHelper.postReviewFromSync(val);
+        console.log('sync reviews length', val.length)
         
+        if (val.length <= 0) {
+          console.log('sync reviews is empty', val)
+        } else {
+          
+          // if reviews is more than or equal to two
+          if (val.length >= 2) {
+
+            let reviewsArrayClone = val.slice(0);
+            console.log(reviewsArrayClone);
+
+            // loop through all reviews in clone -> call postReview them
+            console.log('starting loop');
+            for (let review of reviewsArrayClone) {
+              DBHelper.postReview(review);
+            }
+            
+          } else {
+            // if only one review
+            console.log('called postreview with one review')
+            DBHelper.postReview(val[0]);
+          }
+        
+        }
       })
 
   }
@@ -299,10 +320,12 @@ class DBHelper {
      dbPromise.then(function(db) {
         let tx = db.transaction('sync-reviews', 'readwrite');
         let store = tx.objectStore('sync-reviews');
+        
+        store.clear();
 
-        return store.clear();
-      }).then(function() {
-        console.log('deleted entries in objectstore sync-reviews!')
+        return tx.complete;
+      }).then(function(val) {
+        console.log('deleted entries in objectstore sync-reviews!', val)
       })
   }
 

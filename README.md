@@ -24,5 +24,10 @@ In a terminal, check the version of Python you have: `python -V`. If you have Py
 
 Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. As much as possible, try to maintain use of ES6 in any additional JavaScript you write. 
 
+### Server library and commands
 
+For the last part of this project i wanted to enable text compression to my assets. The easiest and most effective way that I found was using a library called "GzipSimpleHTTPServer" found on github. I downloaded the repo, extracted out the GzipSimpleHTTPServer.py file to my project directory.
 
+To run the server with gzip enabled simply run the command below inside my project directory.
+
+python GzipSimpleHTTPServer.py --encoding=gzip --port=8000

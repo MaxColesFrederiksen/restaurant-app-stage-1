@@ -70,106 +70,112 @@ section:after {
 }
 /* ====================== Navigation ====================== */
 nav {
-  width: 100%;
-  padding: 10px;
-  background-color: white;
-  position: relative;
-  z-index: 99;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.13);
-  text-align: center;
+      width: 100%;
+      padding: 10px;
+      background-color: white;
+      position: relative;
+      z-index: 99;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.13);
+      text-align: center;
 
-}
+    }
 
-.line-breaker {
-  background-color: #ffae00;
-  height: 2px;
-  width: 15px;
-  margin-left: 10px;
+    .line-breaker {
+      background-color: #ffae00;
+      height: 2px;
+      width: 15px;
+      margin-left: 10px;
 
-}
+    }
 
-.nav-container {
-  max-width: 800px;
-  margin: 0 auto;
+    .nav-container {
+      max-width: 800px;
+      margin: 0 auto;
 
-}
+    }
 
-.nav-container > h1 {
-  font-size: 3em;
-  color: #212121;
-  margin-left: 30px;
-}
+    .nav-container > h1 {
+      font-size: 3em;
+      color: #212121;
+      margin-left: 30px;
+    }
 
-.logo {
-  display: inline-block;
-  width: 50px;
-  vertical-align: middle;
-}
+    .logo {
+      display: inline-block;
+      width: 50px;
+      vertical-align: middle;
+    }
 
-nav h1 {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 0 0 30px;
-}
+    nav h1 {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 0 0 30px;
+    }
 
-nav h1 a
- {
-  display: inline-block;
-  cursor: pointer;
-  margin: auto;
-  font-size: .4em;
-  font-weight: 300;
-  vertical-align: middle;
-  color: #212121;
-}
+    nav h1 a
+     {
+      display: inline-block;
+      cursor: pointer;
+      margin: auto;
+      font-size: .4em;
+      font-weight: 300;
+      vertical-align: middle;
+      color: #212121;
+    }
 
-nav h1 a:hover {
-  color: gray;
-}
+    nav h1 a:hover {
+      color: gray;
+    }
+
 
 /* ====================== Cards and Content ====================== */
 
 .content-header {
 
-  color: #a2a2a2;
-  font-size: 2.4em;
-  float: left;
-  letter-spacing: .05em;
-  line-height: 1.6em;
-  margin: 20px 0 10px 20px;
-  font-weight: 300;
-  display: inline-block;
+      color: #a2a2a2;
+      font-size: 2.4em;
+      float: left;
+      letter-spacing: .05em;
+      line-height: 1.6em;
+      margin: 20px 0 10px 20px;
+      font-weight: 300;
+      display: inline-block;
+    }
+
+
+
+    .card {
+      position: relative;
+      max-width: 250px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.13);
+      display: inline-block;
+      font-family: 'Lato', sans-serif;
+      border-radius: 5px;
+      background-color: #fff;
+    }
+
+    .card p {
+      white-space: normal;
+    }
+
+    /* Clearfix */
+
+    /* .card:after {
+      content: "";
+      display: table;
+      clear: both;
+    } */
+
+    .card-image-wrap {
+      overflow: hidden;
+      width: 100%;
+
+    }
+
+    select::-ms-expand { 
+    display: none; /* hide the default arrow in ie10 and ie11 */
 }
 
-
-
-.card {
-  position: relative;
-  max-width: 250px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.13);
-  display: inline-block;
-  font-family: 'Lato', sans-serif;
-  border-radius: 5px;
-  background-color: #fff;
-}
-
-.card p {
-  white-space: normal;
-}
-
-/* Clearfix */
-
-/* .card:after {
-  content: "";
-  display: table;
-  clear: both;
-} */
-
-.card-image-wrap {
-  overflow: hidden;
-  width: 100%;
-
-}
 
 
 
@@ -216,146 +222,9 @@ nav h1 a:hover {
 }
 /* ====================== Restaurant Filtering ====================== */
 
-select::-ms-expand { 
-    display: none; /* hide the default arrow in ie10 and ie11 */
-}
-
-
-
-.filter-options {
-  
-  padding: 10px;
-  align-items: left;
-  display: inline-block;
-  /* margin: 50px 40px 20px 0; */
-}
-
-
-.select-container {
-  display: inline-block;
-  padding: 10px 0;
-}
-
-.top-banner {
-  display: inline-block;
-  width: 100%;
-  padding: 30px 0;
-}
-
-.bottom-banner {
-  display: block;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 50px 0;
-  overflow: hidden;
-
-}
-
-.top-banner-outer {
-  display: block;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.filter-options select {
-  background-color: white;
-  font-size: 1em;
-  margin-left: 10px;
-  margin-top: 20px;
-  padding: 15px;
-  min-width: 200px;
-
-  font-family: 'Lato', sans-serif;
-  -webkit-appearance: none; 
-  -moz-appearance: none;
-  appearance: none;       /* remove default arrow */
-  background-image: url('../img_src/triangle.svg');
-  background-position: 90% 50%;
-  background-size: 15px;
-  background-repeat: no-repeat;
-  border: 0 transparent solid;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.13);
-  border-radius: 5px;
-}
-
+/* Moved to style tag */
 /* ====================== Restaurant Listing ====================== */
-#restaurants-list {
-  display: block;
-  max-width: 1200px;
-  background-color: #f3f3f3;
-  list-style: outside none none;
-  margin: 0 auto;
-  padding: 30px 8px 40px;
-  white-space: nowrap;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  text-align: center;
-}
-
-#restaurants-list:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.restaurants-list-container {
-  width: 100%;
-  background-color: #f3f3f3;
-}
-
-#restaurants-list li {
-
-  /* font-family: Arial,sans-serif; */
-  display: inline-block;
-  margin: 10px;
-
-  text-align: left;
-  
-}
-#restaurants-list .restaurant-img {
-  background-color: #ccc;
-  display: block;
-  border-radius: 5px 5px 0 0;
-  margin: 0;
-  max-width: 100%;
-  min-width: 100%;
-}
-#restaurants-list li h3 {
-
-  color: #212121;
-  font-size: 1.4em;
-  font-weight: 400;
-  line-height: 1.3em;
-  margin: 20px 10px 10px;
-  white-space: pre-line;
-  font-family: 'Lato', sans-serif;
-  
-}
-#restaurants-list p {
-  font-family: 'Lato', sans-serif;
-  margin: 10px;
-  font-size: 1em;
-  color: #757575;
-}
-#restaurants-list li a {
-  font-family: 'Lato', sans-serif;
-  background-color: #ffae00;
-  color: #fff;
-  display: inline-block;
-  font-size: 1em;
-  margin: 15px 0 0 0;
-  width: 70%;
-  padding: 8px 25px 10px;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 0 2px 0 5px;
-  transition: all .3s ease;
-  
-}
-
-#restaurants-list li a:hover {
-  background-color: #212121;
-}
+/* Moved to style tag */
 
 /* ====================== Restaurant Details ====================== */
 .inside header {
@@ -519,7 +388,7 @@ select::-ms-expand {
   display: inline-block;
   color: white;
   letter-spacing: .1em;
-  font-weight: 500;
+  font-weight: 400;
   margin-top: 20px;
 }
 
