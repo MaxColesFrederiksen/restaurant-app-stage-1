@@ -164,7 +164,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   addMarkersToMap();
   addFavoriteListener();
   addMapListener();
-  // DBHelper.lazyLoadImages(restaurants);
+  DBHelper.lazyLoadImages(restaurants);
   // if (document.querySelector('.card')) {
   //   DBHelper.responsiveImages();
   // }
@@ -226,6 +226,7 @@ createRestaurantHTML = (restaurant) => {
 
   const favorite = document.createElement('i');
   favorite.className = 'favorite';
+  favorite.setAttribute('role', 'GenericContainer');
   favorite.setAttribute('favorite-restaurant', restaurant.id);
   
   if (restaurant.is_favorite == "true") {

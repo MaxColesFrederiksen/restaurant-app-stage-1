@@ -42,15 +42,12 @@ window.initMap = () => {
   });
 }
 
-
-
-
-
 /**
  * Get current restaurant from page URL.
  */
 fetchRestaurantFromURL = (callback) => {
   if (self.restaurant) { // restaurant already fetched!
+    console.log('restaurant already feteched')
     callback(null, self.restaurant)
     return;
   }
@@ -73,11 +70,11 @@ fetchRestaurantFromURL = (callback) => {
         console.error(error);
         return;
       }
+      console.log('Reviews logged inside fetchRestaurantFromURL', reviews)
       fillReviewsHTML(reviews)
     })
   }
 }
-
 
 /**
  * Create restaurant HTML and add it to the webpage
@@ -115,10 +112,6 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   addFormListener(restaurant);
 
   DBHelper.lazyLoadImages();
-  
-  
-  
-
 
 }
 
@@ -149,6 +142,7 @@ fillFavoriteHTML = () => {
 
   const favorite = document.createElement('i');
   favorite.className = 'favorite';
+  favorite.setAttribute('role', 'GenericContainer');
   favorite.setAttribute('favorite-restaurant', self.restaurant.id);
   if (self.restaurant.is_favorite == "true") {
 
@@ -160,6 +154,7 @@ fillFavoriteHTML = () => {
   restaurantContainer.appendChild(favorite);
   
   const h6 = document.createElement('h6');
+  h6.className = 'favorite-text';
   h6.innerText = 'Favorite';
 
   restaurantContainer.appendChild(h6);
@@ -176,6 +171,7 @@ fillReviewsHTML = (reviews) => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
+  title.className = 'reviews-banner';
   container.appendChild(title);
   
   if (!reviews) {
@@ -195,6 +191,22 @@ fillReviewsHTML = (reviews) => {
   });
   container.appendChild(ul);
   
+}
+
+removeReviewsHTML = () => {
+  const reviewsList = document.getElementById('reviews-list');
+  const container = document.getElementById('reviews-container');
+  const reviewBanner = document.querySelector('.reviews-banner');
+  const restaurantHours = document.getElementById('restaurant-hours');
+  const restaurantContainer = document.getElementById('restaurant-container');
+  const favorite = document.querySelector('.favorite');
+  const favoriteText = document.querySelector('.favorite-text');
+  container.removeChild(reviewBanner)
+  restaurantHours.innerHTML = '';
+  restaurantContainer.removeChild(favorite);
+  restaurantContainer.removeChild(favoriteText);
+  reviewsList.innerHTML = '';
+
 }
 
 /**
@@ -362,10 +374,36 @@ addFormListener = (restaurant) => {
 
       console.log('posting this review:', reviewObj);
       DBHelper.postReview(reviewObj);
+      console.log('calling update reviews');
+      self.restaurant = null;
+      self.removeReviewsHTML();
+      self.updateReviews();
+
+
     }
 
   });
 }
+
+
+updateReviews = () => {
+  fetchRestaurantFromURL((error, restaurant) => {
+    if (error) { // Got an error!
+      console.log('something');
+      console.error(error);
+    } else {
+      self.map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: restaurant.latlng,
+        scrollwheel: false
+      });
+      // DBHelper.lazyLoadImages();
+      // fillBreadcrumb();
+      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+    }
+  });
+}
+
 
 hasClass = (element, className) => {
     return element.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(element.className);

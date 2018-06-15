@@ -44,7 +44,7 @@ self.addEventListener('fetch', function(event) {
     caches.open(CACHES_NAME).then(function(cache) {
       return cache.match(event.request).then(function (response) {
         return response || fetch(event.request).then(function(res) {
-          if (event.request.method !== "POST") {
+          if (event.request.method == "GET") {
             cache.put(event.request, res.clone());
             return res;
           }
