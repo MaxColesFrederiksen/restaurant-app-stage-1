@@ -19,15 +19,16 @@ const CACHES = [
   '/img_src/triangle.svg',
 ];
 
-caches.delete(CACHES_NAME);
+self.addEventListener('activate', function(event) {
+    event.waitUntil(caches.keys().then(function (cacheNames) {
+        return Promise.all(cacheNames.filter(function (cacheName) {
+          return cacheName.startsWith('assets-') && !CACHES.includes(cacheName);
+        }).map(function (cacheName) {
+          return caches['delete'](cacheName);
+        }));
+    }));
+});
 
-if('serviceWorker' in navigator) {
-  navigator.serviceWorker
-  	.register('/serviceWorker.js')
-  	.then(function(sw) { 
-  		console.log("Service Worker Registered");
-  	});
-}
 
 self.addEventListener('install', function(e) {
 	console.log('installing..');

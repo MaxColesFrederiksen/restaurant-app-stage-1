@@ -226,7 +226,8 @@ createRestaurantHTML = (restaurant) => {
 
   const favorite = document.createElement('i');
   favorite.className = 'favorite';
-  favorite.setAttribute('role', 'GenericContainer');
+  favorite.setAttribute('role', 'button');
+  favorite.setAttribute('title', 'favorite');
   favorite.setAttribute('favorite-restaurant', restaurant.id);
   
   if (restaurant.is_favorite == "true") {

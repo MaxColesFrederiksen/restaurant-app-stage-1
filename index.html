@@ -75,7 +75,15 @@
   </main>
 
 
-  <script async defer charset="utf-8" src="/serviceWorker-min.js"></script>
+  <script>
+    if('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/serviceWorker-min.js')
+        .then(function(sw) { 
+          console.log("Service Worker Registered");
+        });
+    }
+  </script>
   <script async defer src="https://cdn.jsdelivr.net/npm/idb@2.1.1/lib/idb.min.js"></script>
   <script async defer charset="utf-8" src="js/dbhelper-min.js"></script>
   <script async defer charset="utf-8" src="js/main-min.js"></script>

@@ -142,7 +142,7 @@ fillFavoriteHTML = () => {
 
   const favorite = document.createElement('i');
   favorite.className = 'favorite';
-  favorite.setAttribute('role', 'GenericContainer');
+  favorite.setAttribute('role', 'button');
   favorite.setAttribute('favorite-restaurant', self.restaurant.id);
   if (self.restaurant.is_favorite == "true") {
 
@@ -167,12 +167,7 @@ fillFavoriteHTML = () => {
  */
 
 fillReviewsHTML = (reviews) => {
-
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h3');
-  title.innerHTML = 'Reviews';
-  title.className = 'reviews-banner';
-  container.appendChild(title);
   
   if (!reviews) {
     console.log('no reviews');
@@ -182,10 +177,17 @@ fillReviewsHTML = (reviews) => {
     container.appendChild(noReviews);
     return;
   }
+
   const noReviewsEl = document.querySelector('.no-reviews');
-  container.removeChild(noReviewsEl);
-  container.removeChild(title);
+
+  if (noReviewsEl) {
+    container.removeChild(noReviewsEl);
+    
+  }
+  
   const ul = document.getElementById('reviews-list');
+  ul.innerHTML = '';
+
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
@@ -375,8 +377,7 @@ addFormListener = (restaurant) => {
       console.log('posting this review:', reviewObj);
       DBHelper.postReview(reviewObj);
       console.log('calling update reviews');
-      self.restaurant = null;
-      self.removeReviewsHTML();
+      // self.removeReviewsHTML();
       self.updateReviews();
 
 
@@ -387,20 +388,13 @@ addFormListener = (restaurant) => {
 
 
 updateReviews = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      console.log('something');
+  DBHelper.fetchReviewsById(self.restaurant.id, (error, reviews) => {
+    if (!reviews) {
       console.error(error);
-    } else {
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: restaurant.latlng,
-        scrollwheel: false
-      });
-      // DBHelper.lazyLoadImages();
-      // fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+      return;
     }
+    console.log('updating reviews');
+    fillReviewsHTML(reviews);
   });
 }
 
