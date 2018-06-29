@@ -394,6 +394,29 @@ header {
   background-color: #ccc;
 }
 
+.modual {
+  position: fixed;
+  bottom: 0;
+  max-width: 400px;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.10), 0 3px 6px rgba(0,0,0,0.13);
+  background-color: #ffae00;
+}
+
+.modual-text {
+  color: white;
+  font-size: 1em;
+  display: inline-block;
+}
+
+.modual-button {
+  padding: 5px;
+  background: white;
+  color: #ffae00;
+  margin: 0 8px;
+  display: inline-block;
+}
+
 @media screen and (max-width: 789px) {
   .content-header {
     display: block;

@@ -24,6 +24,7 @@ swap_map = () => {
   }
 
 
+
 window.initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
@@ -38,6 +39,8 @@ window.initMap = () => {
       // DBHelper.lazyLoadImages();
       // fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+      
+
     }
   });
 }
@@ -76,6 +79,19 @@ fetchRestaurantFromURL = (callback) => {
   }
 }
 
+addFavorites = () => {
+   DBHelper.fetchRestaurantById(self.restaurant.id, (error, restaurant) => {
+      self.restaurant = restaurant;
+      if (!restaurant) {
+        console.error(error);
+        return;
+      }
+
+      
+      callback(null, restaurant)
+    });
+}
+
 /**
  * Create restaurant HTML and add it to the webpage
  */
@@ -110,6 +126,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   addFavoriteListener();
   addFormListener(restaurant);
+  
 
   DBHelper.lazyLoadImages();
 
@@ -139,8 +156,8 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 
 fillFavoriteHTML = () => {
   const restaurantContainer = document.getElementById("restaurant-container");
-
   const favorite = document.createElement('i');
+
   favorite.className = 'favorite';
   favorite.setAttribute('role', 'button');
   favorite.setAttribute('favorite-restaurant', self.restaurant.id);
@@ -192,7 +209,6 @@ fillReviewsHTML = (reviews) => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);
-  
 }
 
 removeReviewsHTML = () => {
@@ -208,7 +224,6 @@ removeReviewsHTML = () => {
   restaurantContainer.removeChild(favorite);
   restaurantContainer.removeChild(favoriteText);
   reviewsList.innerHTML = '';
-
 }
 
 /**
@@ -312,7 +327,6 @@ addFavoriteListener = () => {
     } else {
       let id = fav.getAttribute("favorite-restaurant");
       DBHelper.unFavoriteRestaurant(id);
-
     }
 
     fav.classList.toggle('favorited');
@@ -323,6 +337,8 @@ addFavoriteListener = () => {
     })
   })
 }
+
+
 
 
 window.addEventListener('load', function() {
@@ -362,6 +378,10 @@ addFormListener = (restaurant) => {
       "rating": rating,
       "comments": comment
     }
+
+
+
+
     
     // Check if user is offline or online before submitting
     // if user is online send review as normal
@@ -379,8 +399,6 @@ addFormListener = (restaurant) => {
       console.log('calling update reviews');
       // self.removeReviewsHTML();
       self.updateReviews();
-
-
     }
 
   });

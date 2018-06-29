@@ -1,4 +1,4 @@
-const CACHES_NAME = 'assets-v8';
+const CACHES_NAME = 'assets-v11';
 const CACHES = [
 	'/index.html',
 	'/js/main.js',
@@ -40,15 +40,38 @@ self.addEventListener('install', function(e) {
 });
 
 
+// cache first
+
+// self.addEventListener('fetch', function(event) {
+//   event.respondWith(
+//     caches.open(CACHES_NAME).then(function(cache) {
+//       return cache.match(event.request).then(function (response) {
+//         return response || fetch(event.request).then(function(res) {
+//           if (event.request.method == "GET") {
+//             cache.put(event.request, res.clone());
+//             return res;
+//           }
+//           return res;
+//         });
+//       });
+//     })
+//   );  
+// });
+
+
+// network first
+
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.open(CACHES_NAME).then(function(cache) {
       return cache.match(event.request).then(function (response) {
-        return response || fetch(event.request).then(function(res) {
+        return fetch(event.request).then(function(res) {
           if (event.request.method == "GET") {
             cache.put(event.request, res.clone());
             return res;
           }
+        }).catch(function(err){
+          return response
         });
       });
     })

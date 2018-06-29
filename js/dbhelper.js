@@ -112,6 +112,22 @@ class DBHelper {
       return response.json();
     }).then(function(data) {
       console.log('Created Post Body:', data);
+      window.location.reload(true);
+    }).then(function(){
+      console.log('Calling clearSyncStore');
+      DBHelper.clearSyncStore();
+    })
+  }
+
+  static createPut(opts, url, id) {
+    console.log('Creating post body');
+    fetch(url, {
+      method: 'put',
+      body: JSON.stringify(opts)
+    }).then(function(response) {
+      return response.json();
+    }).then(function(data) {
+      console.log('Created Post Body:', data);
       // window.location.reload(true);
     }).then(function(){
       console.log('Calling clearSyncStore');
@@ -119,14 +135,47 @@ class DBHelper {
     })
   }
 
+  static favoriteDatabase(id, val) {
 
+    let dbPromise = idb.open(DBHelper.DB_NAME, DBHelper.DB_VERSION)
+
+      dbPromise.then(function(db) {
+        let tx = db.transaction('restaurants', 'readwrite');
+        let store = tx.objectStore('restaurants');
+
+        
+        store.iterateCursor(cursor => {
+          if (!cursor) return;
+          if (cursor.value.id == id) {
+            // change favorite to val
+            // cursor.value.is_favorite = val;
+            console.log(cursor.value);
+            cursor.value.is_favorite = val;
+            console.log(cursor.value)
+          }
+          
+          
+          cursor.continue();
+        });
+        
+
+        return tx.complete;
+      }).then(function() {
+        console.log('cursor is finished!');
+      });
+
+  }
 
    static favoriteRestaurant(id) {
-    DBHelper.createPost({}, `http://localhost:1337/restaurants/${id}/?is_favorite=true`);
+    DBHelper.createPut({}, `http://localhost:1337/restaurants/${id}/?is_favorite=true`, id);
+    // also update indexdb data
+    // second arg is true because it's used in favorite
+    DBHelper.favoriteDatabase(id, true);
    }
 
   static unFavoriteRestaurant(id) {
-    DBHelper.createPost({}, `http://localhost:1337/restaurants/${id}/?is_favorite=false`);
+    DBHelper.createPut({}, `http://localhost:1337/restaurants/${id}/?is_favorite=false`, id);
+    DBHelper.favoriteDatabase(id, false);
   }
 
   static fetchReviews(id, callback) {
